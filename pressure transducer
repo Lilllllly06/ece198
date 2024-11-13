@@ -1,0 +1,34 @@
+// Define the analog pin
+#define PRESSURE_PIN A1
+
+// Define the pressure transducer details
+#define MAX_VOLTAGE 5.0
+#define MAX_PRESSURE 30.0 // in PSI
+#define PSI_TO_PA 6894.76 // Conversion factor from PSI to Pascal
+
+void setup() {
+  // Begin serial communication at 9600 baud
+  Serial.begin(9600);
+}
+
+void loop() {
+  // Read the raw analog input value
+  int raw = analogRead(PRESSURE_PIN);
+
+  // Convert the raw value to voltage
+  float voltage = (raw / 1023.0) * MAX_VOLTAGE;
+
+  // Convert the voltage to pressure in PSI
+  float pressure_psi = (voltage / MAX_VOLTAGE) * MAX_PRESSURE;
+
+  // Convert the pressure to Pascals
+  float pressure_pa = pressure_psi * PSI_TO_PA;
+
+  // Print the pressure value to the serial monitor
+  Serial.print("Pressure: ");
+  Serial.print(pressure_pa);
+  Serial.println(" Pa");
+
+  // Wait for a short period of time before taking the next reading
+  delay(1000);
+}
